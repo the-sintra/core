@@ -52,21 +52,9 @@ const borderRadius = radius.md;
 ```
 
 ### CSS에서 사용
+CSS Variable 네이밍은 복잡한 상태로 구현되어 있습니다. (예: `--st-color-semantic-background-warning-heavy`)
 
-```css
-/* CSS 변수로 토큰 사용 */
-.component {
-  background-color: var(--color-primary);
-  padding: var(--spacing-md);
-  border-radius: var(--radius-md);
-}
-
-@media (min-width: var(--breakpoint-tablet)) {
-  .component {
-    padding: var(--spacing-lg);
-  }
-}
-```
+CSS Variable 사용을 추천하지 않습니다
 
 ## 🎨 디자인 토큰
 
