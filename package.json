@@ -1,0 +1,57 @@
+{
+  "name": "@the-sintra/core",
+  "version": "0.0.1",
+  "description": "core of Sintra Design System",
+  "private": false,
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "prepublishOnly": "npm run build",
+    "build:token": "npx tsx scripts/generateToken.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/the-sintra/core.git"
+  },
+  "keywords": [
+    "sintra",
+    "kit",
+    "react",
+    "utils",
+    "library",
+    "hooks"
+  ],
+  "author": {
+    "name": "Sungju Cho",
+    "email": "hello@devfiro.com",
+    "url": "https://github.com/iamfiro"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/the-sintra/core/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/the-sintra/core#readme",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@babel/preset-react": "^7.27.1",
+    "@types/node": "^24.0.4",
+    "postcss": "^8.4.49",
+    "rollup": "^4.29.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

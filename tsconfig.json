@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+      "importHelpers": true,  // tslib 헬퍼 함수들을 import하도록 설정
+      "target": "es6",
+      "module": "esnext",
+      "lib": ["dom", "dom.Iterable", "esnext"],
+      "allowJs": true,
+      "skipLibCheck": true,
+      "strict": true,
+      "noEmit": false,
+      "esModuleInterop": true,
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "declaration": true,
+      "declarationDir": "dist",
+      "emitDeclarationOnly": false,
+      "outDir": "dist",
+      "incremental": true,
+      "composite": true,
+      "forceConsistentCasingInFileNames": true,
+      "rootDir": "src",
+      "plugins": [
+        {
+          "name": "next"
+        }
+      ],
+      "types": ["node"]
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "dist"]
+  } 
