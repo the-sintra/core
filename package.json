@@ -1,6 +1,6 @@
 {
   "name": "@the-sintra/core",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "core of Sintra Design System",
   "private": false,
   "main": "dist/index.js",
