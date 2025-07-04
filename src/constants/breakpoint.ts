@@ -1,4 +1,3 @@
-export const Breakpoint = {
-    desktop: 'var(--st-breakpoint-desktop)',
-    mobile: 'var(--st-breakpoint-mobile)',
-};
+import { lightTheme } from '../theme/themes';
+
+export const Breakpoint = lightTheme.breakpoint;

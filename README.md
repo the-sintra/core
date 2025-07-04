@@ -1,6 +1,6 @@
-# Sintra Design System Core
+# Sintra Design System
 
-Sintra 디자인 시스템의 핵심 토큰과 스타일 정의를 제공하는 라이브러리입니다.
+React와 React Native에서 모두 사용 가능한 크로스 플랫폼 디자인 시스템입니다.
 
 ## 📋 목차
 
@@ -13,48 +13,113 @@ Sintra 디자인 시스템의 핵심 토큰과 스타일 정의를 제공하는 
 
 ## 🚀 설치
 
-### NPM
 ```bash
-npm install @the-sintra/core
-```
-
-### Yarn
-```bash
-yarn add @the-sintra/core
-```
-
-### PNPM
-```bash
-pnpm add @the-sintra/core
+npm install @sintra/core
 ```
 
 ## 💡 사용법
 
-### TypeScript/JavaScript에서 사용
+### 1. 기본 사용법 (정적 값)
 
 ```typescript
-import { colors, spacing, breakpoints, radius } from '@the-sintra/core';
+import { Color, Spacing, Radius } from '@sintra/core';
 
-// 색상 토큰 사용
-const primaryColor = colors.primary;
-const backgroundColor = colors.background.default;
+// React Native
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Color.background.default, // '#FFFFFF'
+    padding: Spacing.medium, // 16
+    borderRadius: Radius.small, // 8
+  },
+  text: {
+    color: Color.text.primary, // '#0D0E0E'
+  },
+});
 
-// 간격 토큰 사용
-const padding = spacing.md;
-const margin = spacing.lg;
-
-// 브레이크포인트 사용
-const mobileBreakpoint = breakpoints.mobile;
-const desktopBreakpoint = breakpoints.desktop;
-
-// 반지름 토큰 사용
-const borderRadius = radius.md;
+// 웹 (CSS-in-JS)
+const styles = {
+  container: {
+    backgroundColor: Color.background.brand.default, // '#297BFF'
+    color: Color.text.white, // '#FFFFFF'
+  },
+};
 ```
 
-### CSS에서 사용
-CSS Variable 네이밍은 복잡한 상태로 구현되어 있습니다. (예: `--st-color-semantic-background-warning-heavy`)
+### 2. 테마 시스템 사용법 (다크/라이트 모드 지원)
 
-CSS Variable 사용을 추천하지 않습니다
+```tsx
+import React from 'react';
+import { ThemeProvider, useTheme } from '@sintra/core';
+
+// App.tsx - 최상위에서 ThemeProvider로 감싸기
+function App() {
+  return (
+    <ThemeProvider initialTheme="light">
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+
+// 컴포넌트에서 테마 사용
+function MyComponent() {
+  const { theme, themeMode, toggleTheme } = useTheme();
+  
+  return (
+    <View style={{ 
+      backgroundColor: theme.color.background.default,
+      padding: theme.spacing.medium 
+    }}>
+      <Text style={{ color: theme.color.text.primary }}>
+        현재 테마: {themeMode}
+      </Text>
+      <Button title="테마 전환" onPress={toggleTheme} />
+    </View>
+  );
+}
+```
+
+### 3. 색상 시스템
+
+#### 텍스트 색상
+- `Color.text.default` - 기본 텍스트
+- `Color.text.primary` - 주요 텍스트  
+- `Color.text.subtle` - 부차적 텍스트
+- `Color.text.brand.default` - 브랜드 색상 텍스트
+- `Color.text.success.default` - 성공 상태 텍스트
+- `Color.text.warning.default` - 경고 상태 텍스트  
+- `Color.text.danger.default` - 위험 상태 텍스트
+
+#### 배경 색상
+- `Color.background.default` - 기본 배경
+- `Color.background.subtle` - 부차적 배경
+- `Color.background.brand.default` - 브랜드 배경
+- `Color.background.success.default` - 성공 상태 배경
+- `Color.background.warning.default` - 경고 상태 배경
+- `Color.background.danger.default` - 위험 상태 배경
+
+### 4. 간격 시스템
+
+```typescript
+import { Spacing } from '@sintra/core';
+
+const styles = {
+  margin: Spacing.small,    // 8
+  padding: Spacing.medium,  // 16
+  gap: Spacing.large,       // 24
+};
+```
+
+### 5. 둥근 모서리 시스템
+
+```typescript
+import { Radius } from '@sintra/core';
+
+const styles = {
+  borderRadius: Radius.small,  // 8
+  borderRadius: Radius.medium, // 12
+  borderRadius: Radius.full,   // 9999
+};
+```
 
 ## 🎨 디자인 토큰
 
@@ -194,3 +259,37 @@ MIT 라이선스에 따라 배포됩니다. 자세한 내용은 [LICENSE](LICENS
 ---
 
 💡 **팁**: 이 라이브러리는 Sintra 디자인 시스템의 기초가 되는 토큰들을 제공합니다. 실제 UI 컴포넌트가 필요하다면 `@the-sintra/react` or `@the-sintra/react-native` 패키지를 함께 사용하세요. 
+
+## 마이그레이션
+
+기존 CSS variable 기반 코드에서 새로운 테마 시스템으로 마이그레이션:
+
+### Before (CSS Variables)
+```css
+.button {
+  background-color: var(--st-color-semantic-background-brand-default);
+  color: var(--st-color-semantic-text-white);
+}
+```
+
+### After (테마 시스템)
+```typescript
+const styles = {
+  button: {
+    backgroundColor: Color.background.brand.default, // '#297BFF'
+    color: Color.text.white, // '#FFFFFF'
+  },
+};
+```
+
+## 타입 지원
+
+모든 색상, 간격, 반지름 값은 TypeScript로 완전히 타입이 지정되어 있어 자동완성과 타입 안전성을 제공합니다.
+
+```typescript
+import { Theme, ThemeMode } from '@sintra/core';
+
+const customTheme: Theme = {
+  // 완전한 타입 지원
+};
+``` 
