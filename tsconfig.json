@@ -25,7 +25,7 @@
           "name": "next"
         }
       ],
-      "types": ["node"],
+      "types": ["node", "jest"],
       "jsx": "react-jsx"
     },
     "include": ["src", "src/**/*.json"],

@@ -98,4 +98,104 @@ export interface Theme {
   };
 }
 
-export type ThemeMode = 'light' | 'dark'; 
+export type ThemeMode = 'light' | 'dark';
+
+/**
+ * Foundation 색상 override를 위한 타입
+ * 
+ * @description 기본 색상 팔레트(gray, red, brand 등)를 부분적으로 override할 때 사용하는 타입입니다.
+ * foundation 색상만 변경하면 semantic 색상들이 자동으로 반영됩니다.
+ * 
+ * @type {FoundationColorOverrides}
+ * @example
+ * ```typescript
+ * const myFoundationColors: FoundationColorOverrides = {
+ *   brand: {
+ *     50: '#ff6b6b', // 브랜드 메인 색상을 빨간색으로
+ *     60: '#ff5252', // 브랜드 진한 색상도 함께 조정
+ *   },
+ *   red: {
+ *     50: '#4ecdc4', // 위험 색상을 청록색으로 변경
+ *   },
+ *   neutral: {
+ *     100: '#2c3e50', // 검은색을 네이비로 변경
+ *   }
+ * };
+ * ```
+ */
+export type FoundationColorOverrides = {
+  base?: {
+    base0?: string;
+    base100?: string;
+  };
+  brand?: {
+    0?: string;
+    5?: string;
+    10?: string;
+    20?: string;
+    30?: string;
+    40?: string;
+    50?: string;
+    60?: string;
+    70?: string;
+    80?: string;
+    90?: string;
+    100?: string;
+  };
+  neutral?: {
+    0?: string;
+    5?: string;
+    10?: string;
+    20?: string;
+    30?: string;
+    40?: string;
+    50?: string;
+    60?: string;
+    70?: string;
+    80?: string;
+    90?: string;
+    100?: string;
+  };
+  red?: {
+    0?: string;
+    5?: string;
+    10?: string;
+    20?: string;
+    30?: string;
+    40?: string;
+    50?: string;
+    60?: string;
+    70?: string;
+    80?: string;
+    90?: string;
+    100?: string;
+  };
+  orange?: {
+    0?: string;
+    5?: string;
+    10?: string;
+    20?: string;
+    30?: string;
+    40?: string;
+    50?: string;
+    60?: string;
+    70?: string;
+    80?: string;
+    90?: string;
+    100?: string;
+  };
+  green?: {
+    0?: string;
+    5?: string;
+    10?: string;
+    20?: string;
+    30?: string;
+    40?: string;
+    50?: string;
+    60?: string;
+    70?: string;
+    80?: string;
+    90?: string;
+    100?: string;
+  };
+}; 

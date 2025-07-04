@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Theme, ThemeMode } from './types';
+import React, { createContext, useContext, useState, ReactNode, useMemo } from 'react';
+import { Theme, ThemeMode, FoundationColorOverrides } from './types';
 import { lightTheme, darkTheme } from './themes';
+import { createCustomThemes } from './utils';
 
 /**
  * 테마 컨텍스트의 값 타입 정의
@@ -25,6 +26,8 @@ interface ThemeProviderProps {
   children: ReactNode;
   /** 초기 테마 모드 (기본값: 'light') */
   initialTheme?: ThemeMode;
+  /** Foundation 색상을 override할 색상 설정 */
+  foundationColorOverrides?: FoundationColorOverrides;
 }
 
 /**
@@ -40,6 +43,7 @@ interface ThemeProviderProps {
  * ```tsx
  * import { ThemeProvider } from '@the-sintra/core';
  * 
+ * // 기본 사용법
  * function App() {
  *   return (
  *     <ThemeProvider initialTheme="dark">
@@ -47,12 +51,47 @@ interface ThemeProviderProps {
  *     </ThemeProvider>
  *   );
  * }
+ * 
+ * // Foundation 색상 override 사용법
+ * function AppWithCustomColors() {
+ *   const customFoundationColors = {
+ *     brand: {
+ *       50: '#ff6b6b', // 브랜드 메인 색상을 빨간색으로
+ *       60: '#ff5252', // 브랜드 진한 색상도 함께 조정
+ *     },
+ *     red: {
+ *       50: '#4ecdc4', // 위험 색상을 청록색으로 변경
+ *     },
+ *     neutral: {
+ *       100: '#2c3e50', // 검은색을 네이비로 변경
+ *     }
+ *   };
+ *   
+ *   return (
+ *     <ThemeProvider initialTheme="light" foundationColorOverrides={customFoundationColors}>
+ *       <YourApp />
+ *     </ThemeProvider>
+ *   );
+ * }
  * ```
  */
-export function ThemeProvider({ children, initialTheme = 'light' }: ThemeProviderProps) {
+export function ThemeProvider({ 
+  children, 
+  initialTheme = 'light', 
+  foundationColorOverrides 
+}: ThemeProviderProps) {
   const [themeMode, setThemeMode] = useState<ThemeMode>(initialTheme);
   
-  const theme = themeMode === 'light' ? lightTheme : darkTheme;
+  // Foundation 색상 override를 적용한 최종 테마를 계산
+  const theme = useMemo(() => {
+    if (!foundationColorOverrides) {
+      return themeMode === 'light' ? lightTheme : darkTheme;
+    }
+    
+    // Foundation 색상 override를 적용한 커스텀 테마 생성
+    const { lightTheme: customLightTheme, darkTheme: customDarkTheme } = createCustomThemes(foundationColorOverrides);
+    return themeMode === 'light' ? customLightTheme : customDarkTheme;
+  }, [themeMode, foundationColorOverrides]);
   
   /**
    * 현재 테마를 반대 테마로 토글합니다.
