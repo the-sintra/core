@@ -1,57 +1,56 @@
-# Sintra Design System
+# @the-sintra/core
 
-React와 React Native에서 모두 사용 가능한 크로스 플랫폼 디자인 시스템입니다.
+**React와 React Native를 위한 크로스 플랫폼 디자인 시스템**
+
+라이트/다크 모드 지원, 브랜드 커스터마이징, TypeScript 완전 지원을 제공하는 현대적인 디자인 시스템입니다.
+
+[![npm version](https://badge.fury.io/js/@the-sintra%2Fcore.svg)](https://badge.fury.io/js/@the-sintra%2Fcore)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## ✨ 주요 특징
+
+- 🌗 **다크/라이트 모드 지원** - 완전한 테마 시스템
+- 🎨 **브랜드 커스터마이징** - Foundation 색상 Override 기능
+- 📱 **크로스 플랫폼** - React와 React Native 동시 지원
+- 🔧 **TypeScript 지원** - 완전한 타입 안전성
+- 🚀 **Zero-config** - 즉시 사용 가능한 설정
+- 📐 **체계적인 디자인 토큰** - 일관성 있는 디자인
 
 ## 📋 목차
 
-- [설치](#설치)
-- [사용법](#사용법)
-- [디자인 토큰](#디자인-토큰)
-- [개발](#개발)
-- [빌드](#빌드)
-- [기여하기](#기여하기)
+- [설치](#-설치)
+- [기본 사용법](#-기본-사용법)
+- [테마 시스템](#-테마-시스템)
+- [브랜드 커스터마이징](#-브랜드-커스터마이징)
+- [디자인 토큰](#-디자인-토큰)
+- [예제](#-예제)
+- [개발](#-개발)
 
 ## 🚀 설치
 
 ```bash
-npm install @sintra/core
+npm install @the-sintra/core
 ```
 
-## 💡 사용법
-
-### 1. 기본 사용법 (정적 값)
-
-```typescript
-import { Color, Spacing, Radius } from '@sintra/core';
-
-// React Native
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: Color.background.default, // '#FFFFFF'
-    padding: Spacing.medium, // 16
-    borderRadius: Radius.small, // 8
-  },
-  text: {
-    color: Color.text.primary, // '#0D0E0E'
-  },
-});
-
-// 웹 (CSS-in-JS)
-const styles = {
-  container: {
-    backgroundColor: Color.background.brand.default, // '#297BFF'
-    color: Color.text.white, // '#FFFFFF'
-  },
-};
+```bash
+yarn add @the-sintra/core
 ```
 
-### 2. 테마 시스템 사용법 (다크/라이트 모드 지원)
+```bash
+pnpm add @the-sintra/core
+```
+
+## 💡 기본 사용법
+
+### 1. 테마 시스템 사용 (권장)
+
+다크/라이트 모드와 브랜드 커스터마이징이 필요한 경우 테마 시스템을 사용하세요.
 
 ```tsx
 import React from 'react';
-import { ThemeProvider, useTheme } from '@sintra/core';
+import { ThemeProvider, useTheme } from '@the-sintra/core';
 
-// App.tsx - 최상위에서 ThemeProvider로 감싸기
+// 1. 앱 최상위에서 ThemeProvider로 감싸기
 function App() {
   return (
     <ThemeProvider initialTheme="light">
@@ -60,236 +59,408 @@ function App() {
   );
 }
 
-// 컴포넌트에서 테마 사용
+// 2. 컴포넌트에서 테마 사용
 function MyComponent() {
   const { theme, themeMode, toggleTheme } = useTheme();
   
   return (
-    <View style={{ 
+    <div style={{ 
       backgroundColor: theme.color.background.default,
-      padding: theme.spacing.medium 
+      color: theme.color.text.default,
+      padding: theme.spacing.medium,
+      borderRadius: theme.radius.medium
     }}>
-      <Text style={{ color: theme.color.text.primary }}>
-        현재 테마: {themeMode}
-      </Text>
-      <Button title="테마 전환" onPress={toggleTheme} />
-    </View>
+      <h1>현재 테마: {themeMode}</h1>
+      <button onClick={toggleTheme}>
+        {themeMode === 'light' ? '🌙 다크 모드' : '☀️ 라이트 모드'}
+      </button>
+    </div>
   );
 }
 ```
 
-### 3. 색상 시스템
+### 2. 정적 토큰 사용 (추천 안함)
 
-#### 텍스트 색상
-- `Color.text.default` - 기본 텍스트
-- `Color.text.primary` - 주요 텍스트  
-- `Color.text.subtle` - 부차적 텍스트
-- `Color.text.brand.default` - 브랜드 색상 텍스트
-- `Color.text.success.default` - 성공 상태 텍스트
-- `Color.text.warning.default` - 경고 상태 텍스트  
-- `Color.text.danger.default` - 위험 상태 텍스트
-
-#### 배경 색상
-- `Color.background.default` - 기본 배경
-- `Color.background.subtle` - 부차적 배경
-- `Color.background.brand.default` - 브랜드 배경
-- `Color.background.success.default` - 성공 상태 배경
-- `Color.background.warning.default` - 경고 상태 배경
-- `Color.background.danger.default` - 위험 상태 배경
-
-### 4. 간격 시스템
+정적 값이 필요한 경우 직접 토큰을 import하여 사용할 수 있습니다. 하지만 이 방법은 **테마 색상 커스터마이징과 다크/라이트 모드 전환이 불가능**합니다. 브랜드에 맞는 색상 커스터마이징이 필요하다면 테마 시스템을 사용하세요. ([브랜드 커스터마이징](#-브랜드-커스터마이징) 섹션 참고)
 
 ```typescript
-import { Spacing } from '@sintra/core';
+import { Color, Spacing, Radius } from '@the-sintra/core';
 
-const styles = {
-  margin: Spacing.small,    // 8
-  padding: Spacing.medium,  // 16
-  gap: Spacing.large,       // 24
+// React Native StyleSheet
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Color.background.default,
+    padding: Spacing.medium,
+    borderRadius: Radius.medium,
+  },
+  text: {
+    color: Color.text.default,
+    fontSize: 16,
+  },
+});
+
+// CSS-in-JS (Emotion, Styled-components 등)
+const StyledButton = styled.button`
+  background-color: ${Color.background.brand.default};
+  color: ${Color.text.white};
+  padding: ${Spacing.small}px ${Spacing.medium}px;
+  border-radius: ${Radius.medium}px;
+  border: none;
+`;
+```
+
+## 🌗 테마 시스템
+
+### ThemeProvider 설정
+
+```tsx
+import { ThemeProvider } from '@the-sintra/core';
+
+function App() {
+  return (
+    <ThemeProvider 
+      initialTheme="dark" // 'light' | 'dark'
+    >
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+```
+
+### useTheme 훅 사용
+
+```tsx
+import { useTheme } from '@the-sintra/core';
+
+function MyComponent() {
+  const { 
+    theme,        // 현재 테마 객체
+    themeMode,    // 'light' | 'dark'
+    setThemeMode, // 테마 설정 함수
+    toggleTheme   // 테마 토글 함수
+  } = useTheme();
+
+  return (
+    <div style={{ color: theme.color.text.default }}>
+      테마: {themeMode}
+    </div>
+  );
+}
+```
+
+## 🎨 브랜드 커스터마이징
+
+Foundation 색상을 Override하여 브랜드에 맞는 커스텀 테마를 만들 수 있습니다.
+
+```tsx
+import { ThemeProvider, FoundationColorOverrides } from '@the-sintra/core';
+
+function App() {
+  // 브랜드 색상 커스터마이징
+  const brandColors: FoundationColorOverrides = {
+    brand: {
+      50: '#FF6B6B', // 메인 브랜드 색상을 빨간색으로
+      60: '#FF5252', // 진한 브랜드 색상
+    },
+    red: {
+      50: '#4ECDC4', // 위험 색상을 청록색으로
+    },
+    neutral: {
+      100: '#2C3E50', // 검은색을 네이비로
+    }
+  };
+
+  return (
+    <ThemeProvider 
+      initialTheme="light"
+      foundationColorOverrides={brandColors}
+    >
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+```
+
+### Foundation 색상 팔레트
+
+각 색상은 0-100 단계로 구성되어 있습니다:
+
+- **brand**: 브랜드 주색상
+- **neutral**: 회색 계열 (텍스트, 배경)
+- **red**: 빨간색 계열 (위험, 에러)
+- **orange**: 주황색 계열 (경고)
+- **green**: 초록색 계열 (성공)
+
+```typescript
+const customColors: FoundationColorOverrides = {
+  brand: {
+    0: '#FFFFFF',   // 가장 밝음
+    50: '#297BFF',  // 메인 색상
+    100: '#082546'  // 가장 어두움
+  }
 };
 ```
 
-### 5. 둥근 모서리 시스템
+## 🎯 디자인 토큰
 
+### 색상 시스템
+
+#### Text Color
 ```typescript
-import { Radius } from '@sintra/core';
+theme.color.text.default    // 기본 텍스트
+theme.color.text.primary    // 주요 텍스트
+theme.color.text.subtle     // 부차적 텍스트
+theme.color.text.secondary  // 보조 텍스트
+theme.color.text.disabled   // 비활성 텍스트
+theme.color.text.white      // 흰색 텍스트
+theme.color.text.black      // 검은색 텍스트
 
-const styles = {
-  borderRadius: Radius.small,  // 8
-  borderRadius: Radius.medium, // 12
-  borderRadius: Radius.full,   // 9999
-};
+// 브랜드 색상
+theme.color.text.brand.default
+theme.color.text.brand.subtle
+
+// 상태 색상
+theme.color.text.success.default
+theme.color.text.warning.default
+theme.color.text.danger.default
 ```
 
-## 🎨 디자인 토큰
+#### Background Color
+```typescript
+theme.color.background.default // 기본 배경
+theme.color.background.subtle  // 부차적 배경
 
-### 색상 (Colors)
-- **Primary**: 메인 브랜드 색상
-- **Secondary**: 보조 색상
-- **Background**: 배경 색상 팔레트
-- **Text**: 텍스트 색상 팔레트
-- **Border**: 테두리 색상
-- **Status**: 상태별 색상 (success, warning, error, info)
+// 브랜드 배경
+theme.color.background.brand.subtle   // 가장 연함
+theme.color.background.brand.soft     // 연함
+theme.color.background.brand.default  // 기본
+theme.color.background.brand.heavy    // 진함
 
-### 간격 (Spacing)
-- **xs**: 4px
-- **sm**: 8px
-- **md**: 16px
-- **lg**: 24px
-- **xl**: 32px
-- **2xl**: 48px
-- **3xl**: 64px
+// 상태별 배경 (success, warning, danger도 동일한 구조)
+theme.color.background.success.subtle
+theme.color.background.success.soft
+theme.color.background.success.default
+theme.color.background.success.heavy
+```
 
-### 브레이크포인트 (Breakpoints)
-- **mobile**: 0px
-- **tablet**: 768px
-- **desktop**: 1024px
-- **wide**: 1280px
+### Spacing
 
-### 반지름 (Radius)
-- **none**: 0px
-- **sm**: 2px
-- **md**: 4px
-- **lg**: 8px
-- **xl**: 12px
-- **full**: 9999px
+```typescript
+theme.spacing.none      // 0px
+theme.spacing.micro     // 4px
+theme.spacing.narrow    // 6px
+theme.spacing.small     // 8px
+theme.spacing.moderate  // 12px
+theme.spacing.medium    // 16px
+theme.spacing.large     // 24px
+theme.spacing.big       // 32px
+theme.spacing.huge      // 40px
+theme.spacing.massive   // 48px
+theme.spacing.colossal  // 64px
+```
+
+### Radius
+
+```typescript
+theme.radius.none     // 0px
+theme.radius.tiny     // 4px
+theme.radius.small    // 8px
+theme.radius.medium   // 12px
+theme.radius.large    // 16px
+theme.radius.big      // 20px
+theme.radius.huge     // 32px
+theme.radius.massive  // 64px
+theme.radius.full     // 9999px (완전히 둥근 모서리)
+```
+
+### Breakpoint
+
+```typescript
+theme.breakpoint.mobile   // 402px
+theme.breakpoint.desktop  // 1440px
+```
+
+## 📝 예제
+
+### 버튼 컴포넌트
+
+```tsx
+import React from 'react';
+import { useTheme } from '@the-sintra/core';
+
+interface ButtonProps {
+  variant?: 'primary' | 'secondary' | 'danger';
+  size?: 'small' | 'medium' | 'large';
+  children: React.ReactNode;
+  onClick?: () => void;
+}
+
+function Button({ variant = 'primary', size = 'medium', children, onClick }: ButtonProps) {
+  const { theme } = useTheme();
+  
+  const variants = {
+    primary: {
+      backgroundColor: theme.color.background.brand.default,
+      color: theme.color.text.white,
+    },
+    secondary: {
+      backgroundColor: theme.color.background.subtle,
+      color: theme.color.text.default,
+    },
+    danger: {
+      backgroundColor: theme.color.background.danger.default,
+      color: theme.color.text.white,
+    }
+  };
+
+  const sizes = {
+    small: {
+      padding: `${theme.spacing.narrow} ${theme.spacing.small}`,
+      fontSize: '0.875rem',
+    },
+    medium: {
+      padding: `${theme.spacing.small} ${theme.spacing.medium}`,
+      fontSize: '1rem',
+    },
+    large: {
+      padding: `${theme.spacing.moderate} ${theme.spacing.large}`,
+      fontSize: '1.125rem',
+    }
+  };
+
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        ...variants[variant],
+        ...sizes[size],
+        border: 'none',
+        borderRadius: theme.radius.medium,
+        cursor: 'pointer',
+        fontWeight: '600',
+        transition: 'all 0.2s ease',
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+```
+
+### 카드 컴포넌트
+
+```tsx
+import React from 'react';
+import { useTheme } from '@the-sintra/core';
+
+interface CardProps {
+  title: string;
+  children: React.ReactNode;
+  elevated?: boolean;
+}
+
+function Card({ title, children, elevated = false }: CardProps) {
+  const { theme } = useTheme();
+
+  return (
+    <div style={{
+      backgroundColor: theme.color.background.default,
+      border: `1px solid ${theme.color.line.subtle}`,
+      borderRadius: theme.radius.large,
+      padding: theme.spacing.large,
+      boxShadow: elevated ? '0 4px 12px rgba(0, 0, 0, 0.1)' : 'none',
+    }}>
+      <h2 style={{
+        color: theme.color.text.primary,
+        fontSize: '1.25rem',
+        fontWeight: 'bold',
+        marginBottom: theme.spacing.medium,
+        margin: 0,
+      }}>
+        {title}
+      </h2>
+      <div style={{ color: theme.color.text.default }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+```
 
 ## 🛠 개발
 
 ### 요구사항
 - Node.js 16.x 이상
-- NPM 7.x 이상
+- npm 7.x 이상
 
-### 프로젝트 설정
+### 개발 환경 설정
+
 ```bash
+# 저장소 클론
+git clone https://github.com/the-sintra/core.git
+cd core
+
 # 의존성 설치
 npm install
 
-# 개발 모드 실행
-npm run dev
+# 빌드
+npm run build
 
-# 타입 체크
-npm run type-check
+# 테스트
+npm test
+
+# 토큰 생성
+npm run build:token
 ```
 
 ### 프로젝트 구조
+
 ```
 src/
-├── constants/          # 디자인 토큰 정의
+├── constants/          # 정적 토큰 export
 │   ├── color.ts        # 색상 토큰
 │   ├── spacing.ts      # 간격 토큰
+│   ├── radius.ts       # 둥근 모서리 토큰
 │   ├── breakpoint.ts   # 브레이크포인트 토큰
-│   ├── radius.ts       # 반지름 토큰
-│   └── index.ts        # 통합 export
+│   └── index.ts
+├── theme/              # 테마 시스템
+│   ├── ThemeContext.tsx # 테마 Context와 Provider
+│   ├── themes.ts       # 라이트/다크 테마 정의
+│   ├── types.ts        # 타입 정의
+│   ├── utils.ts        # 유틸리티 함수
+│   └── index.ts
+├── token/              # 디자인 토큰 JSON
+│   └── token.json      # 모든 디자인 토큰 정의
 ├── styles/             # 기본 스타일
-│   └── base.css        # 기본 CSS 스타일
-├── token/              # 토큰 정의 파일
-│   └── token.json      # JSON 형태의 토큰 정의
-└── index.ts            # 메인 export 파일
+│   └── base.css
+└── index.ts            # 메인 export
 ```
 
-## 🔧 빌드
+## 📦 번들 크기
 
-### 라이브러리 빌드
-```bash
-npm run build
-```
-
-### 토큰 생성
-```bash
-npm run generate-tokens
-```
-
-빌드 결과물은 `dist/` 폴더에 생성됩니다:
-- `dist/index.js` - CommonJS 모듈
-- `dist/index.esm.js` - ES 모듈
-- `dist/index.d.ts` - TypeScript 타입 정의
-
-## 📚 API 문서
-
-### 색상 토큰
-```typescript
-interface Colors {
-  primary: string;
-  secondary: string;
-  background: {
-    default: string;
-    subtle: string;
-    muted: string;
-  };
-  text: {
-    primary: string;
-    secondary: string;
-    muted: string;
-  };
-  // ... 기타 색상 정의
-}
-```
-
-### 간격 토큰
-```typescript
-interface Spacing {
-  xs: string;
-  sm: string;
-  md: string;
-  lg: string;
-  xl: string;
-  '2xl': string;
-  '3xl': string;
-}
-```
+- **압축 전**: ~15KB
+- **압축 후**: ~4KB
+- **Tree-shaking 지원**: ✅
 
 ## 🤝 기여하기
 
-1. 이 저장소를 포크합니다
-2. 새로운 기능 브랜치를 생성합니다 (`git checkout -b feature/새기능`)
-3. 변경사항을 커밋합니다 (`git commit -am '새 기능 추가'`)
-4. 브랜치에 푸시합니다 (`git push origin feature/새기능`)
-5. Pull Request를 생성합니다
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-### 개발 가이드라인
-- 새로운 토큰을 추가할 때는 일관된 네이밍 규칙을 따라주세요
-- 변경사항에 대한 테스트를 작성해주세요
-- 커밋 메시지는 [Conventional Commits](https://www.conventionalcommits.org/) 규칙을 따라주세요
+## 📄 라이센스
 
-## 📄 라이선스
+MIT License. 자세한 내용은 [LICENSE](LICENSE) 파일을 참고하세요.
 
-MIT 라이선스에 따라 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
+## 📞 문의
+
+- **Author**: Sungju Cho
+- **Email**: hello@devfiro.com
+- **GitHub**: [@iamfiro](https://github.com/iamfiro)
+- **Issues**: [GitHub Issues](https://github.com/the-sintra/core/issues)
 
 ---
 
-💡 **팁**: 이 라이브러리는 Sintra 디자인 시스템의 기초가 되는 토큰들을 제공합니다. 실제 UI 컴포넌트가 필요하다면 `@the-sintra/react` or `@the-sintra/react-native` 패키지를 함께 사용하세요. 
-
-## 마이그레이션
-
-기존 CSS variable 기반 코드에서 새로운 테마 시스템으로 마이그레이션:
-
-### Before (CSS Variables)
-```css
-.button {
-  background-color: var(--st-color-semantic-background-brand-default);
-  color: var(--st-color-semantic-text-white);
-}
-```
-
-### After (테마 시스템)
-```typescript
-const styles = {
-  button: {
-    backgroundColor: Color.background.brand.default, // '#297BFF'
-    color: Color.text.white, // '#FFFFFF'
-  },
-};
-```
-
-## 타입 지원
-
-모든 색상, 간격, 반지름 값은 TypeScript로 완전히 타입이 지정되어 있어 자동완성과 타입 안전성을 제공합니다.
-
-```typescript
-import { Theme, ThemeMode } from '@sintra/core';
-
-const customTheme: Theme = {
-  // 완전한 타입 지원
-};
-``` 
+**@the-sintra/core**로 더 나은 사용자 경험을 만들어보세요! 🚀 
