@@ -6,6 +6,8 @@ import terser from '@rollup/plugin-terser';
 import postcss from 'rollup-plugin-postcss';
 import { readFileSync } from 'fs';
 import babel from '@rollup/plugin-babel';
+import json from '@rollup/plugin-json';
+
 
 const packageJson = JSON.parse(
     readFileSync(new URL('./package.json', import.meta.url)).toString()
@@ -30,6 +32,7 @@ const config = {
     peerDepsExternal(),
     resolve(),
     commonjs(),
+    json(),
     typescript({
       tsconfig: './tsconfig.json',
       exclude: ['**/*.stories.tsx', '**/*.test.tsx']
